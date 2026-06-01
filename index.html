@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kaif's GeoExplorer Pro</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <aside class="sidebar" id="sidebarDrawer">
+            <div class="drawer-handle"></div>
+
+            <div class="brand">
+                <i class="fa-solid fa-location-crosshairs"></i>
+                <span>Kaif's GeoExplorer Pro</span>
+            </div>
+
+            <div class="search-section">
+                <div class="input-group">
+                    <input type="text" id="locationInput" placeholder="Search city or area..." onkeypress="handleSearch(event)">
+                    <button onclick="searchManualLocation()"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+
+                <button id="locateBtn" class="btn-secondary" onclick="requestLiveLocation()">
+                    <i class="fa-solid fa-location-arrow"></i> Use My Current Location
+                </button>
+
+                <div class="map-hint">
+                    <i class="fa-solid fa-circle-info"></i> <span>Tip: Tap/click anywhere directly on the map to set a custom search point!</span>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Search Radius</label>
+                        <span id="radiusVal">3 km</span>
+                    </div>
+                    <input type="range" id="radiusInput" min="1" max="10" value="3" step="1" oninput="updateRadiusDisplay(this.value)">
+                </div>
+
+                <div class="filter-group">
+                    <label>Discovery Category</label>
+                    <select id="categorySelect" onchange="findPlaces(this.value)">
+                        <option value="" disabled selected>What are you looking for?</option>
+                        <option value="restaurant">🍴 Restaurants</option>
+                        <option value="pharmacy">💊 Pharmacies</option>
+                        <option value="hospital">🏥 Hospitals</option>
+                        <option value="police">👮 Police Stations</option>
+                        <option value="cafe">☕ Cafes</option>
+                        <option value="bank">🏦 Banks</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="results-panel" class="results-container">
+                <div class="empty-state">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <p>Tap a location on the map, choose a radius, and pick a category to explore.</p>
+                </div>
+            </div>
+        </aside>
+
+        <main id="map"></main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

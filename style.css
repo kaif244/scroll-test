@@ -1,0 +1,254 @@
+:root {
+    --primary: #4f46e5;
+    --primary-light: rgba(79, 70, 229, 0.1);
+    --primary-hover: #4338ca;
+    --bg-light: #f8fafc;
+    --border: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+}
+
+body, html {
+    margin: 0; padding: 0;
+    height: 100%; width: 100%;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-light);
+    overflow: hidden;
+    /* Prevents the mobile browser bounce effect from disrupting map interactions */
+    position: fixed; 
+}
+
+.app-wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+/* ==========================================
+   DESKTOP DEFAULT LAYOUT FRAMEWORK
+   ========================================== */
+.sidebar {
+    width: 400px;
+    height: 100%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    z-index: 1000; /* Stays above map layers */
+    box-shadow: 10px 0 15px -3px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s cubic-bezier(0.1, 0.76, 0.55, 0.94);
+}
+
+/* Hide drag indicator on desktop layouts */
+.drawer-handle {
+    display: none;
+}
+
+.brand {
+    padding: 25px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.02em;
+}
+
+.search-section {
+    padding: 0 25px 25px 25px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    flex-shrink: 0;
+}
+
+.input-group {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: 12px;
+    padding: 5px;
+    border: 1px solid var(--border);
+}
+
+.input-group input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+.input-group button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px dashed var(--primary);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+.map-hint {
+    display: flex;
+    gap: 8px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    color: #166534;
+    line-height: 1.3;
+}
+.map-hint i { color: #15803d; }
+
+.slider-group { display: flex; flex-direction: column; gap: 8px; }
+.slider-header { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+.slider-header span { color: var(--primary); }
+.slider-group input[type="range"] { width: 100%; accent-color: var(--primary); }
+
+.filter-group label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.filter-group select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: white; font-size: 0.95rem; }
+
+.results-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: var(--bg-light);
+    -webkit-overflow-scrolling: touch; /* Fast kinetic scrolling physics for iOS Safari */
+}
+
+.location-card {
+    background: white;
+    padding: 16px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.icon-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+.card-info { flex: 1; }
+.card-info h4 { margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.4; }
+.card-info p { margin: 3px 0 0 0; font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+.nav-link { color: var(--text-muted); font-size: 1.1rem; padding: 5px; }
+
+.empty-state { text-align: center; margin-top: 40px; color: var(--text-muted); }
+.empty-state i { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.25; }
+.custom-map-marker { display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.25); border: 2px solid white; }
+
+#map { 
+    flex: 1; 
+    height: 100%; 
+    width: 100%;
+    z-index: 1;
+}
+
+/* ==========================================
+   ADVANCED NATIVE MOBILE DRAWER OVERRIDES
+   ========================================== */
+@media (max-width: 768px) {
+    .app-wrapper {
+        flex-direction: column;
+    }
+
+    #map {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%; /* Map occupies full underlying space */
+        z-index: 1;
+    }
+
+    /* Transform Sidebar into an overlay touch bottom drawer sheet */
+    .sidebar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 85vh; /* Maximum vertical expansion limit */
+        background: white;
+        border-right: none;
+        border-top-left-radius: 24px;
+        border-top-right-radius: 24px;
+        z-index: 1000;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.12);
+        
+        /* Default state: showing controls while leaving top half of map viewable */
+        transform: translateY(50vh); 
+        will-change: transform;
+    }
+
+    /* Center Pill Indicator Bar */
+    .drawer-handle {
+        display: block;
+        width: 44px;
+        height: 5px;
+        background: #cbd5e1;
+        border-radius: 10px;
+        margin: 12px auto 4px auto;
+        flex-shrink: 0;
+    }
+
+    /* Expand panels slightly on mobile to prioritize results views */
+    .sidebar.expanded {
+        transform: translateY(0vh) !important;
+    }
+
+    .sidebar.collapsed {
+        transform: translateY(75vh) !important;
+    }
+
+    .brand {
+        padding: 8px 20px 10px 20px;
+        font-size: 1.15rem;
+    }
+
+    .search-section {
+        padding: 0 20px 12px 20px;
+        gap: 10px;
+    }
+
+    .map-hint {
+        padding: 6px 10px;
+        font-size: 0.72rem;
+    }
+
+    .input-group input, .filter-group select, .btn-secondary {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    .results-container {
+        padding: 10px 20px;
+    }
+
+    .location-card {
+        padding: 12px;
+        border-radius: 14px;
+        margin-bottom: 10px;
+    }
+}
